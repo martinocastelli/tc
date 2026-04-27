@@ -6,7 +6,8 @@
 #include <stdlib.h>
 
 enum {
-	STDIN_BUFF_SIZE = 4096
+	STDIN_BUFF_SIZE = 4096,
+	TC_SAVED_FONTS_ID_MAX = 16,
 };
 
 typedef enum {
@@ -81,9 +82,13 @@ void tc_set_color_default(void);
 void tc_set_color_standard(tc_standard_color_e color);
 void tc_set_color_6x6x6(uint8_t r, uint8_t g, uint8_t b);
 void tc_set_color_24bit(uint8_t r, uint8_t g, uint8_t b);
+void tc_set_bg_color_default(void);
 void tc_set_bg_color_standard(tc_standard_color_e color);
 void tc_set_bg_color_6x6x6(uint8_t r, uint8_t g, uint8_t b);
 void tc_set_bg_color_24bit(uint8_t r, uint8_t g, uint8_t b);
+//save and reuse text formattig !! remember to remove them !! 
+void tc_create_text_font(uint8_t id, bool bold, bool underline, bool blinking, bool strikethrough, tc_standard_color_e fg_color, tc_standard_color_e bg_color); //set the font to the specified id
+void tc_set_text_font(uint8_t id);
 
 void tc_get_terminal_size(uint16_t* rows, uint16_t* colmuns);
 void tc_set_echo_mode(bool echo);
