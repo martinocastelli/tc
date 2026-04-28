@@ -8,16 +8,7 @@
 
 static struct termios tty_default, tty_state;
 
-typedef struct {
-	tc_standard_color_e fg_color;
-	tc_standard_color_e bg_color;
-	bool bold;
-	bool underline;
-	bool blinking;
-	bool strikethrough;
-} text_font_d;
-static text_font_d present_state;
-static text_font_d saved_fonts[TC_SAVED_FONTS_ID_MAX];
+static tc_text_font_d present_state;
 
 void tc_init(void) {
 	tcgetattr(STDIN_FILENO, &tty_state);
@@ -157,24 +148,17 @@ void tc_set_bg_color_24bit(uint8_t r, uint8_t g, uint8_t b) {
 	printf("\033[48;2;%u;%u;%um", r, g, b);
 	present_state.bg_color = TC_COLOR_NONE;
 }
-void tc_create_text_font(uint8_t id, bool bold, bool underline, bool blinking, bool strikethrough, tc_standard_color_e fg_color, tc_standard_color_e bg_color) { //set the font to the specified id
-	if(id >= TC_SAVED_FONTS_ID_MAX) {
-		return;
-	}
-	saved_fonts[id].bold = bold;
-	saved_fonts[id].underline = underline;
-	saved_fonts[id].blinking = blinking;
-	saved_fonts[id].strikethrough = strikethrough;
-	saved_fonts[id].fg_color = fg_color;
-	saved_fonts[id].bg_color = bg_color;
+
+void tc_set_text_font(const tc_text_font_d *text_font) {
+	tc_set_bold(text_font->bold);
+	tc_set_underline(text_font->underline);
+	tc_set_blinking(text_font->blinking);
+	tc_set_strikethrough(text_font->strikethrough);
+	tc_set_color_standard(text_font->fg_color);
+	tc_set_bg_color_standard(text_font->bg_color);
 }
-void tc_set_text_font(uint8_t id) {
-	tc_set_bold(saved_fonts[id].bold);
-	tc_set_underline(saved_fonts[id].underline);
-	tc_set_blinking(saved_fonts[id].blinking);
-	tc_set_strikethrough(saved_fonts[id].strikethrough);
-	tc_set_color_standard(saved_fonts[id].fg_color);
-	tc_set_bg_color_standard(saved_fonts[id].bg_color);
+tc_text_font_d tc_get_present_text_font(void) {
+	return present_state;
 }
 
 void tc_get_terminal_size(uint16_t* rows, uint16_t* columns) {

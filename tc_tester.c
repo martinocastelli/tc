@@ -27,28 +27,32 @@ int main(void) {
 	tc_erase_to_origin();
 	fflush(stdout);
 
-	tc_create_text_font(1, false, false, false, false, TC_COLOR_DEFAULT, TC_COLOR_DEFAULT);
-	tc_create_text_font(2, true, true, true, true, TC_RED, TC_BRIGHT_GREEN);
-
-	tc_set_text_font(1);
-	printf("hello\n");
-
-	tc_set_text_font(2);
-	printf("hello\n");
-
-	tc_set_text_font(1);
-	printf("hello\n");
-
-	tc_set_text_font(2);
-	printf("hello\n");
-
-	tc_set_text_font(1);
-	printf("hello\n");
-
-	tc_set_text_font(2);
-	printf("hello\n");
-
+	tc_text_font_d font1 = tc_get_present_text_font();
+	tc_text_font_d font2 = font1;
 	
+	font1.fg_color = TC_RED;
+	font2.fg_color = TC_GREEN;
+
+	font1.strikethrough = true;
+
+	tc_set_text_font(&font1);
+	printf("hello\n");
+
+	tc_set_text_font(&font2);
+	printf("hello\n");
+
+	tc_set_text_font(&font1);
+	printf("hello\n");
+
+	tc_set_text_font(&font2);
+	printf("hello\n");
+
+	tc_set_text_font(&font1);
+	printf("hello\n");
+
+	tc_set_text_font(&font2);
+	printf("hello\n");
+
 	tc_hide_cursor(false);
 	tc_reset_font();
 	putchar('\n');

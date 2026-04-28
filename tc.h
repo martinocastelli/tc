@@ -7,7 +7,6 @@
 
 enum {
 	STDIN_BUFF_SIZE = 4096,
-	TC_SAVED_FONTS_ID_MAX = 16,
 };
 
 typedef enum {
@@ -47,6 +46,15 @@ typedef struct {
 	size_t normal_input_size;
 } tc_keyboard_input_d;
 
+typedef struct {
+	tc_standard_color_e fg_color;
+	tc_standard_color_e bg_color;
+	bool bold;
+	bool underline;
+	bool blinking;
+	bool strikethrough;
+} tc_text_font_d;
+
 //init terminal attr
 void tc_init(void);
 void tc_restore_defaults(void);
@@ -62,7 +70,7 @@ void tc_save_cursor_pos(void); //return value: true=saved false=a position was a
 void tc_restore_cursor_pos(void); //return value: true=a position was saved false=no position where saved
 void tc_hide_cursor(bool hide_Nshow);
 
-// void tc_read_cursor_pos(uint16_t *line, uint16_t *column); //TODO (maybie not)
+// void tc_read_cursor_pos(uint16_t *line, uint16_t *column); //ToDo (maybie not)
 
 //erase_display
 void tc_erase_screen(void);
@@ -86,9 +94,9 @@ void tc_set_bg_color_default(void);
 void tc_set_bg_color_standard(tc_standard_color_e color);
 void tc_set_bg_color_6x6x6(uint8_t r, uint8_t g, uint8_t b);
 void tc_set_bg_color_24bit(uint8_t r, uint8_t g, uint8_t b);
-//save and reuse text formattig !! remember to remove them !! 
-void tc_create_text_font(uint8_t id, bool bold, bool underline, bool blinking, bool strikethrough, tc_standard_color_e fg_color, tc_standard_color_e bg_color); //set the font to the specified id
-void tc_set_text_font(uint8_t id);
+//set a text font
+void tc_set_text_font(const tc_text_font_d *text_font);
+tc_text_font_d tc_get_present_text_font(void);
 
 void tc_get_terminal_size(uint16_t* rows, uint16_t* colmuns);
 void tc_set_echo_mode(bool echo);
