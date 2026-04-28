@@ -10,7 +10,7 @@ $(EXE): $(OBJECT)
 	$(CC) -o $@ $(LFLAGS) $^
 
 tc_tester.o: tc_tester.c tc.h
-	$(CC) -o $@ $(CFLAGS) main.c
+	$(CC) -o $@ $(CFLAGS) tc_tester.c
 
 tc.o: tc.h tc.c
 	$(CC) -o $@ $(CFLAGS) tc.c
