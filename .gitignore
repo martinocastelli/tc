@@ -1,5 +1,4 @@
 tags 
 *.o
 *.out
-tc_tester.c
 
