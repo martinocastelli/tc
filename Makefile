@@ -24,3 +24,7 @@ clean_build: all
 
 build_clean: $(OBJECT) $(EXE)
 	rm -f $(OBJECT) $(TAGS)
+
+run: $(EXE)
+	./$(EXE)
+
