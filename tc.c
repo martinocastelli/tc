@@ -196,8 +196,12 @@ void tc_get_pressed_keys(tc_keyboard_input_d* keyboard_input) {
 		if (buff[i] != '\033') {
 			keyboard_input->normal_input_size++;
 		} else {
-			keyboard_input->escape_input_size++;
-			i += 2;
+			if(buff[i] == '[') {
+				keyboard_input->escape_input_size++;
+				i += 2;
+			} else {
+				//unmapped escape
+			}
 		}
 	}
 	free(keyboard_input->normal_input);
@@ -210,22 +214,26 @@ void tc_get_pressed_keys(tc_keyboard_input_d* keyboard_input) {
 	for(size_t i = 0;buff[i] != '\0';i++) {
 		if (buff[i] != '\033') {
 			keyboard_input->normal_input[x++] = buff[i];
-		} else if (buff[i + 1] == '[') {
-			switch(buff[i + 2]) {
-				case 'A': {
-					keyboard_input->escape_input[y++] = TC_ARROW_UP;
-				} break;
-				case 'B': {
-					keyboard_input->escape_input[y++] = TC_ARROW_DOWN;
-				} break;
-				case 'C': {
-					keyboard_input->escape_input[y++] = TC_ARROW_RIGHT;
-				} break;
-				case 'D': {
-					keyboard_input->escape_input[y++] = TC_ARROW_LEFT;
-				} break;
-				default: {
+		} else {
+			if (buff[i + 1] == '[') {
+				switch(buff[i + 2]) {
+					case 'A':
+						keyboard_input->escape_input[y++] = TC_ARROW_UP;
+						break;
+					case 'B':
+						keyboard_input->escape_input[y++] = TC_ARROW_DOWN;
+						break;
+					case 'C':
+						keyboard_input->escape_input[y++] = TC_ARROW_RIGHT;
+						break;
+					case 'D':
+						keyboard_input->escape_input[y++] = TC_ARROW_LEFT;
+						break;
+					default:
 				}
+				i += 2;
+			} else {
+				//unmapped escape
 			}
 		}
 	}
